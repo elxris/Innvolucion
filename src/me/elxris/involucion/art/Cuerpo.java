@@ -89,33 +89,34 @@ public class Cuerpo implements Art{
     }
     
     public void dibujar(Graphics g) {
-        if(vivir()){
-            return;
-        }
-        if(getTipo()>=10){
-            if(getHambre()<0){
-                getComida(getTipoAlimento(getTipo()));
-            }else if(getRespira()<0){
-                getComida(getTipoRespira(getTipo()));
+        if(!Game.getPausa()){
+            if(vivir()){
+                return;
             }
+            if(getTipo()>=10){
+                if(getHambre()<0){
+                    getComida(getTipoAlimento(getTipo()));
+                }else if(getRespira()<0){
+                    getComida(getTipoRespira(getTipo()));
+                }
+                //Funciones de evolucion
+                if(rndm.nextInt(500+(10*Game.art.size())) == 0){
+                    procrear();
+                    desprender();
+                }
+            }else{
+                addAngulo(getRapidez()/10);
+            }
+            mover();
         }
-        mover();
+        //Dibujar
         if(getTipo() < 10){
-            //addAngulo(getRapidez()/10);
             dibujos.dibujo(getTipo()+1, g, true, getPosX(), getPosY(), getSize(), getAngulo());
         }else{
             g.setColor(getColor());
             g.fillPolygon(forma());
-        }
-        //Funciones
-        if(getTipo() >= 10){
             estado(g);
-            if(rndm.nextInt(500+(10*Game.art.size())) == 0){
-                procrear();
-                desprender();
-            }
         }
-        //System.out.print("X: "+getPosX()+" Y: "+getPosY()+" tX: "+getTarX()+" tY: "+getTarY()+" a: "+Math.toDegrees(angulo)+"\n");
     }
     public void mover(){
         double dX, dY, hyp, ang, diff, sX, sY;

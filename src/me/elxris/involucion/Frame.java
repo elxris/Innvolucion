@@ -43,6 +43,10 @@ public class Frame extends JFrame implements MouseListener, MouseMotionListener,
         game.addGui(gui);
         game.addGui(c);
     }
+    public void reSet(){
+        Game.reSet();
+        Gui.reSet();
+    }
     public void run(){
         thread.run();
     }
@@ -70,11 +74,13 @@ public class Frame extends JFrame implements MouseListener, MouseMotionListener,
     @Override
     public void mousePressed(MouseEvent e) {
         // TODO Auto-generated method stub
+        c.onPressed();
     }
     @Override
     public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
         gui.click(e.getX(), e.getY());
+        c.onReleased();
     }
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -83,30 +89,27 @@ public class Frame extends JFrame implements MouseListener, MouseMotionListener,
     }
     @Override
     public void mouseMoved(MouseEvent e) {
-        // TODO Auto-generated method stub
         c.mover(e.getX(), e.getY());
     }
     @Override
     public void keyPressed(KeyEvent e) {
-        // TODO Auto-generated method stub
-        if(e.getKeyCode() == 27){ //ESC
-            System.exit(ABORT);
-        }
-        if(e.getKeyCode() == 49){ //1 
+        if(e.getKeyCode() == 49){ //1
             setDebug(true);
-        }
-        if(e.getKeyCode() == 50){ //2 
-            Tick.pausar(true);
         }
     }
     @Override
     public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
+        if(e.getKeyCode() == 27){ //ESC
+            System.exit(ABORT);
+        }
         if(e.getKeyCode() == 49){ //1 
             setDebug(false);
         }
-        if(e.getKeyCode() == 50){ //2 
-            Tick.pausar(false);
+        if(e.getKeyCode() == 32){ //Barra espaciadora 
+            Game.pausar();
+        }
+        if(e.getKeyCode() == 82){ //R 
+            reSet();
         }
     }
     @Override

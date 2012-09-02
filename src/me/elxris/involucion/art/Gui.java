@@ -18,12 +18,12 @@ public class Gui implements Art {
     private final int[] y = {0, z, b-c, 3*b-c, 3*b, 5*b, 5*b+c, 7*b+c, 7*b+2*c, 9*b+2*c, 9*b+3*c, 11*b+3*c, 11*b+4*c, 13*b+4*c, 13*b+5*c, 15*b+5*c, 15*b+6*c, 17*b+6*c};
     private Dibujos dibujos;
     private int seleccion;
-    private static int variables[] = {5, 5, 5, 5, 5, 5, 5, 5};
+    private static int variables[];
     private Random rndm = new Random(529269819);
-    
     public Gui(){
         dibujos = new Dibujos(x, y);
         setSeleccion(1);
+        reSet();
     }
     public void dibujar(Graphics g) {
         for(int i = 0; i < x.length/2; i++){
@@ -33,7 +33,9 @@ public class Gui implements Art {
             g.setColor(Color.RED);
             g.fillPolygon(dibujarSeleccion());
             drawTexto(g);
-            loteria();
+            if(!Game.getPausa()){
+                loteria();
+            }
         }
     }
     public Polygon dibujarSeleccion(){
@@ -101,15 +103,19 @@ public class Gui implements Art {
         g.drawString(String.format("W-D: %d", variables[7]), posX, y[2*i++]+b+c);
         g.setColor(Color.WHITE);
         g.drawString(String.format("Score: %d", Game.score), b, b);
+        if(Game.getPausa()){
+            g.drawString("PAUSED (PRESS SPACEBAR)", b, z-(2*b));
+        }
         f = new Font("Arial", Font.PLAIN, 12);
         g.setFont(f);
-        if(Game.cuerpos < 1){
+        if(Game.getPausa()){
             g.drawString("Click on the squares to select any item (food or species).", 2*b, 2*b);
             g.drawString("If species are named F-D, means he needs Food and Dioxide.", 2*b, 3*b);
             g.drawString("The bar indicates: life>orange, oxygen>cyan and hunger>pink.", 2*b, 4*b);
-            g.drawString("Careful not to push the button ESC. That close this great game.", 2*b, 5*b);
-            g.drawString("Basically when they are hungry they look for Food/Waste", 2*b, 6*b);
-            g.drawString("or if they are choking they look for Oxygen/Dioxide.", 2*b, 7*b);
+            g.drawString("Basically when they are hungry they look for Food/Waste", 2*b, 5*b);
+            g.drawString("or if they are choking they look for Oxygen/Dioxide.", 2*b, 6*b);
+            g.drawString("ESC - Close, R - Restart, SpaceBar - Pause", 2*b, 7*b);
+            g.drawString("Num 1 - Debug Stuff and Paths", 2*b, 8*b);
         }
         g.drawString("Involucion By @elxirs. LudumDare #24", c, z-d);
     }
@@ -151,5 +157,9 @@ public class Gui implements Art {
         if(rndm.nextInt(100000/(Game.score+1))==0){
             variables[rndm.nextInt(4)]++;
         }
+    }
+    public static void reSet(){
+        int[] var = {5, 5, 5, 5, 5, 5, 5, 5};
+        variables = var;
     }
 }
