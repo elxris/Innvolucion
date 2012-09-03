@@ -49,8 +49,12 @@ public class Game extends JPanel{
     public static void pausar(){
         pausa = !pausa;
     }
+    public static void pausar(Boolean n){
+        pausa = n;
+    }
     public static void reSet(){
         art.clear();
         score = 0;
+        pausar(true);
     }
 }

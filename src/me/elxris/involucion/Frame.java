@@ -42,6 +42,7 @@ public class Frame extends JFrame implements MouseListener, MouseMotionListener,
         gui = new Gui();
         game.addGui(gui);
         game.addGui(c);
+        Game.pausar(true);
     }
     public void reSet(){
         Game.reSet();
