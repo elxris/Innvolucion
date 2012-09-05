@@ -80,7 +80,7 @@ public class Frame extends JFrame implements MouseListener, MouseMotionListener,
     @Override
     public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
-        gui.click(e.getX(), e.getY());
+        gui.onClick(e.getX(), e.getY(), e.getClickCount());
         c.onReleased();
     }
     @Override
@@ -111,6 +111,11 @@ public class Frame extends JFrame implements MouseListener, MouseMotionListener,
         }
         if(e.getKeyCode() == 82){ //R 
             reSet();
+        }
+        if((e.getKeyCode() == 87)||(e.getKeyCode() == 38)){ //W o Arriba
+            gui.addSeleccion(-1);
+        }else if((e.getKeyCode() == 83)||(e.getKeyCode() == 40)){ //S o Abajo
+            gui.addSeleccion(1);
         }
     }
     @Override

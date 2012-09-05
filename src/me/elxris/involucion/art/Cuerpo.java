@@ -13,7 +13,6 @@ public class Cuerpo implements Art{
     private static int limitX = 500, limitY = 500;
     private int lados, especie, mutar, tipo, vida, hambre, respira, resistencia;
     private Color color;
-    public static int pubTarX, pubTarY;
     public static final Dibujos dibujos = new Dibujos(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0});
     
     public Cuerpo(){
@@ -443,9 +442,9 @@ public class Cuerpo implements Art{
                     rndm.nextInt(getMutar()*2)-getMutar());
             c.setEspecie(getEspecie()+rndm.nextInt(getMutar()));
             c.setLados(getLados());
-            c.setResistencia(getResistencia()*(rndm.nextInt(getMutar())+1));
-            c.setRapidez(getRapidez()+rndm.nextInt(getMutar()));
-            c.setMutar(getMutar()*(rndm.nextInt(getMutar())+1));
+            c.setResistencia(getResistencia()+(rndm.nextInt(getMutar()))-1);
+            c.setRapidez(getRapidez()+rndm.nextInt(getMutar())-1);
+            c.setMutar(getMutar()+(rndm.nextInt(getMutar()))-1);
             Game.addCuerpo(c);
             setSize(getSize()-2);
             Game.score += c.getEspecie();

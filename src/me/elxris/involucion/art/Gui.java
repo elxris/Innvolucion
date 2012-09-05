@@ -30,7 +30,7 @@ public class Gui implements Art {
             g.setColor(colores(i));
             g.fillPolygon(forma(i));
             dibujos.dibujo(i, g, false, 0, 0, 1, 0);
-            g.setColor(Color.RED);
+            g.setColor(Color.WHITE);
             g.fillPolygon(dibujarSeleccion());
             drawTexto(g);
             if(!Game.getPausa()){
@@ -41,17 +41,23 @@ public class Gui implements Art {
     public Polygon dibujarSeleccion(){
         Polygon p = new Polygon();
         int i = getSeleccion()*2;
-        p.addPoint(x[i], y[i]+2*b-d);
-        p.addPoint(x[i+1], y[i]+2*b-d);
-        p.addPoint(x[i+1], y[i+1]);
-        p.addPoint(x[i], y[i+1]);
+        p.addPoint(x[i]-2*d, y[i]);
+        p.addPoint(x[i]-d, y[i]);
+        p.addPoint(x[i]-d, y[i+1]);
+        p.addPoint(x[i]-2*d, y[i+1]);
         return p;
     }
     public int getSeleccion(){
         return seleccion;
     }
     public void setSeleccion(int i){
-        seleccion = i;
+        if(i < 1){
+            i = 8 - i;
+        }
+        seleccion = (i%9);
+    }
+    public void addSeleccion(int i){
+        setSeleccion((getSeleccion()+i));
     }
     public Polygon forma(int i){
         Polygon p = new Polygon();
@@ -114,12 +120,14 @@ public class Gui implements Art {
             g.drawString("The bar indicates: life>orange, oxygen>cyan and hunger>pink.", 2*b, 4*b);
             g.drawString("Basically when they are hungry they look for Food/Waste", 2*b, 5*b);
             g.drawString("or if they are choking they look for Oxygen/Dioxide.", 2*b, 6*b);
-            g.drawString("ESC - Close, R - Restart, SpaceBar - Pause", 2*b, 7*b);
-            g.drawString("Num 1 - Debug Stuff and Paths", 2*b, 8*b);
+            g.drawString("ESC - Close, R - Restart, SpaceBar - Pause (and see this screen)", 2*b, 7*b);
+            g.drawString("W or UP Arrow to move up the selection, S or DOWN Arrow to move down.", 2*b, 8*b);
+            g.drawString("Num 1 - Debug Stuff and Paths", 2*b, 9*b);
+            g.drawString("Double click on the squares to put all on the screen.", 2*b, 10*b);
         }
         g.drawString("Involucion By @elxirs. LudumDare #24 v0.3", c, z-d);
     }
-    public void click(int x, int y){
+    public void onClick(int x, int y, int c){
         Boolean gui = false;
         for(int i = 0; i < this.x.length/2; i++){
             if(forma(i).intersects(x, y, 1, 1)){
@@ -134,6 +142,9 @@ public class Gui implements Art {
                 case 7:
                 case 8:
                     setSeleccion(i);
+                    if(c > 1){
+                        onDoubleClick();
+                    }
                     break;
                 default:
                     break;
@@ -161,5 +172,19 @@ public class Gui implements Art {
     public static void reSet(){
         int[] var = {5, 5, 5, 5, 5, 5, 5, 5};
         variables = var;
+    }
+    public void onDoubleClick(){
+        for(int i = variables[getSeleccion()-1]; i > 0; i--){
+            Cuerpo cuerpo = new Cuerpo(rndm.nextInt(), rndm.nextInt());
+            if(getSeleccion()<5){
+                cuerpo.setTipo(getSeleccion()-1);
+            }else{
+                cuerpo.setTipo(getSeleccion()+5);
+            }
+            if(variables[getSeleccion()-1] > 0){
+                variables[getSeleccion()-1]--;
+                Game.addCuerpo(cuerpo);
+            }
+        }
     }
 }
