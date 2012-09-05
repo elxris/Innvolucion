@@ -39,42 +39,36 @@ public class Cuerpo implements Art{
     }
     
     public void estado(Graphics g){
-        //Hambre
-        Polygon p = new Polygon();
-        p.addPoint((int)(getPosX()-(getHambre()+getResistencia())/100), (int)(getPosY()-getSize()));
-        p.addPoint((int)(getPosX()+(getHambre()+getResistencia())/100), (int)(getPosY()-getSize()));
-        p.addPoint((int)(getPosX()+(getHambre()+getResistencia())/100), (int)(getPosY()-getSize()+2));
-        p.addPoint((int)(getPosX()-(getHambre()+getResistencia())/100), (int)(getPosY()-getSize()+2));
-        g.setColor(Color.MAGENTA);
-        g.fillPolygon(p);
-        //Oxigeno
-        p = new Polygon();
-        p.addPoint((int)(getPosX()-(getRespira()+getResistencia())/100), (int)(getPosY()-getSize()-3));
-        p.addPoint((int)(getPosX()+(getRespira()+getResistencia())/100), (int)(getPosY()-getSize()-3));
-        p.addPoint((int)(getPosX()+(getRespira()+getResistencia())/100), (int)(getPosY()-getSize()-1));
-        p.addPoint((int)(getPosX()-(getRespira()+getResistencia())/100), (int)(getPosY()-getSize()-1));
-        g.setColor(Color.CYAN);
-        g.fillPolygon(p);
-        //Vida
-        p = new Polygon();
-        p.addPoint((int)(getPosX()-(getVida())/1000), (int)(getPosY()-getSize()-7));
-        p.addPoint((int)(getPosX()+(getVida())/1000), (int)(getPosY()-getSize()-7));
-        p.addPoint((int)(getPosX()+(getVida())/1000), (int)(getPosY()-getSize()-5));
-        p.addPoint((int)(getPosX()-(getVida())/1000), (int)(getPosY()-getSize()-5));
-        g.setColor(Color.ORANGE);
-        g.fillPolygon(p);
-        //Angulo
-        double dX, dY;
-        dX = getTarX() - getPosX();
-        dY = getTarY() - getPosY();
+        if(getTipo() >= 10){
+            //Hambre
+            Polygon p = new Polygon();
+            p.addPoint((int)(getPosX()-(getHambre()+getResistencia())/100), (int)(getPosY()-getSize()));
+            p.addPoint((int)(getPosX()+(getHambre()+getResistencia())/100), (int)(getPosY()-getSize()));
+            p.addPoint((int)(getPosX()+(getHambre()+getResistencia())/100), (int)(getPosY()-getSize()+2));
+            p.addPoint((int)(getPosX()-(getHambre()+getResistencia())/100), (int)(getPosY()-getSize()+2));
+            g.setColor(Color.MAGENTA);
+            g.fillPolygon(p);
+            //Oxigeno
+            p = new Polygon();
+            p.addPoint((int)(getPosX()-(getRespira()+getResistencia())/100), (int)(getPosY()-getSize()-3));
+            p.addPoint((int)(getPosX()+(getRespira()+getResistencia())/100), (int)(getPosY()-getSize()-3));
+            p.addPoint((int)(getPosX()+(getRespira()+getResistencia())/100), (int)(getPosY()-getSize()-1));
+            p.addPoint((int)(getPosX()-(getRespira()+getResistencia())/100), (int)(getPosY()-getSize()-1));
+            g.setColor(Color.CYAN);
+            g.fillPolygon(p);
+            //Vida
+            p = new Polygon();
+            p.addPoint((int)(getPosX()-(getVida())/1000), (int)(getPosY()-getSize()-7));
+            p.addPoint((int)(getPosX()+(getVida())/1000), (int)(getPosY()-getSize()-7));
+            p.addPoint((int)(getPosX()+(getVida())/1000), (int)(getPosY()-getSize()-5));
+            p.addPoint((int)(getPosX()-(getVida())/1000), (int)(getPosY()-getSize()-5));
+            g.setColor(Color.ORANGE);
+            g.fillPolygon(p);
+        }
         if(Frame.getDebug()){
             g.setColor(Color.WHITE);
             g.drawLine((int)getPosX(), (int)getPosY(), (int)getTarX(), (int)getTarY());
-            g.drawString("Tar:"+(getTarAngulo()), (int)getTarX(), (int)getTarY());
-            g.drawString("Ang:"+(getAngulo()), (int)getTarX(), (int)getTarY()+12);
-            g.drawString("Diff:"+(getTarAngulo()-getAngulo()), (int)getTarX(), (int)getTarY()+24);
-            g.drawString("X:"+dX, (int)getTarX(), (int)getTarY()+36);
-            g.drawString("Y:"+dY, (int)getTarX(), (int)getTarY()+48);
+            g.drawString("Time: "+(getVida()), (int)getTarX(), (int)getTarY());
         }
     }
 
@@ -94,10 +88,11 @@ public class Cuerpo implements Art{
                 return;
             }
             if(getTipo()>=10){
+                if(getRespira()<0){
+                    getComida(getTipoRespira(getTipo()));
+                }
                 if(getHambre()<0){
                     getComida(getTipoAlimento(getTipo()));
-                }else if(getRespira()<0){
-                    getComida(getTipoRespira(getTipo()));
                 }
                 //Funciones de evolucion
                 if(rndm.nextInt(500+(10*Game.art.size())) == 0){
@@ -115,17 +110,17 @@ public class Cuerpo implements Art{
         }else{
             g.setColor(getColor());
             g.fillPolygon(forma());
-            estado(g);
         }
+        estado(g);
     }
     public void mover(){
-        double dX, dY, hyp, ang, diff, sX, sY;
+        double dX, dY, hyp, ang, diff, sX, sY, pX, pY;
         dX = getTarX() - getPosX();
         dY = getTarY() - getPosY();
         hyp = Math.hypot(dX, dY);
         if(hyp < getSize()){
-            setTarX(rndm.nextInt(limitX));
-            setTarY(rndm.nextInt(limitY));
+            addTarX(rndm.nextInt(limitX));
+            addTarY(rndm.nextInt(limitY));
         }
         dX = getTarX() - getPosX();
         dY = getTarY() - getPosY();
@@ -139,14 +134,20 @@ public class Cuerpo implements Art{
         }else{
             sY = 1;
         }
-        //hyp = Math.hypot(dX, dY);
         ang = Math.atan(Math.abs(dY/dX));
         setTarAngulo(ang);
-        //addTarAngulo(-.01);
         diff = (getTarAngulo()-getAngulo());
         addAngulo(diff);
-        addPosX((Math.cos(getAngulo())*getRapidez()*sX));
-        addPosY((Math.sin(getAngulo())*getRapidez()*sY));
+        pX = Math.cos(getAngulo())*getRapidez()*sX;
+        if(dX > limitX/2){
+            pX = -pX;
+        }
+        addPosX(pX);
+        pY = Math.sin(getAngulo())*getRapidez()*sY;
+        if(dY > limitY/2){
+            pY = -pY;
+        }
+        addPosY(pY);
     }
     public double getPosX(){
         return posX;
@@ -154,8 +155,8 @@ public class Cuerpo implements Art{
     
     public void setPosX(double x){
         x %= limitX;
-        if( x < 0 ){
-            x = limitX + x;
+        if( x < -getSize() ){
+            x = getSize() + limitX + x;
         }
         posX = x;
     }
@@ -170,8 +171,8 @@ public class Cuerpo implements Art{
     
     public void setPosY(double y){
         y %= limitY;
-        if( y < 0 ){
-            y = limitY + y;
+        if( y < -getSize() ){
+            y = getSize() + limitY + y;
         }
         posY = y;
     }
@@ -429,7 +430,7 @@ public class Cuerpo implements Art{
     
     public void procrear(){
         //Reunir capacidades de ambiente como del cuerpo
-        if(getSize() >= 15){
+        if(getSize() > 10){
             Cuerpo c = new Cuerpo();
             c.setTipo(getTipo());
             c.setPosX(getPosX());
@@ -443,12 +444,12 @@ public class Cuerpo implements Art{
             c.setEspecie(getEspecie()+rndm.nextInt(getMutar()));
             c.setLados(getLados());
             c.setResistencia(getResistencia()*rndm.nextInt(getMutar()));
-            c.addRapidez(getRapidez()*rndm.nextInt(getMutar()));
+            c.setRapidez(getRapidez()+rndm.nextInt(getMutar()));
             c.setMutar(getMutar()*rndm.nextInt(getMutar()));
+            c.setHambre(200);
+            c.setRespira(200);
             Game.addCuerpo(c);
-            if(rndm.nextInt(1000)!=0){
-                setSize(getSize()/2);
-            }
+            setSize(getSize()-2);
             Game.score += c.getEspecie();
         }
     }

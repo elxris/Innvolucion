@@ -89,7 +89,7 @@ public class Gui implements Art {
     public void drawTexto(Graphics g){
         Font f = new Font("Arial", Font.BOLD, 18);
         g.setFont(f);
-        int posX = z+4*b;
+        int posX = z+3*b+c;
         g.setColor(Color.GREEN);
         int i = 1;
         g.drawString(String.format("Food: %d", variables[0]), posX, y[2*i++]+b+c);
@@ -117,7 +117,7 @@ public class Gui implements Art {
             g.drawString("ESC - Close, R - Restart, SpaceBar - Pause", 2*b, 7*b);
             g.drawString("Num 1 - Debug Stuff and Paths", 2*b, 8*b);
         }
-        g.drawString("Involucion By @elxirs. LudumDare #24", c, z-d);
+        g.drawString("Involucion By @elxirs. LudumDare #24 v0.3", c, z-d);
     }
     public void click(int x, int y){
         Boolean gui = false;
