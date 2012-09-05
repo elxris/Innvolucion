@@ -443,11 +443,9 @@ public class Cuerpo implements Art{
                     rndm.nextInt(getMutar()*2)-getMutar());
             c.setEspecie(getEspecie()+rndm.nextInt(getMutar()));
             c.setLados(getLados());
-            c.setResistencia(getResistencia()*rndm.nextInt(getMutar()));
+            c.setResistencia(getResistencia()*(rndm.nextInt(getMutar())+1));
             c.setRapidez(getRapidez()+rndm.nextInt(getMutar()));
-            c.setMutar(getMutar()*rndm.nextInt(getMutar()));
-            c.setHambre(200);
-            c.setRespira(200);
+            c.setMutar(getMutar()*(rndm.nextInt(getMutar())+1));
             Game.addCuerpo(c);
             setSize(getSize()-2);
             Game.score += c.getEspecie();
