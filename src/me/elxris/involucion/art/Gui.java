@@ -54,7 +54,7 @@ public class Gui implements Art {
         if(i < 1){
             i = 8 - i;
         }
-        seleccion = (i%9);
+        seleccion = (i-1)%8+1;
     }
     public void addSeleccion(int i){
         setSeleccion((getSeleccion()+i));
