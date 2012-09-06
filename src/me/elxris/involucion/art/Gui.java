@@ -115,7 +115,7 @@ public class Gui implements Art {
         f = new Font("Arial", Font.PLAIN, 12);
         g.setFont(f);
         if(Game.getPausa()){
-            g.drawString("Click on the squares to select any item (food or species).", 2*b, 2*b);
+            g.drawString("Click on the green squares to select any item (food or species).", 2*b, 2*b);
             g.drawString("If species are named F-D, means he needs Food and Dioxide.", 2*b, 3*b);
             g.drawString("The bar indicates: life>orange, oxygen>cyan and hunger>pink.", 2*b, 4*b);
             g.drawString("Basically when they are hungry they look for Food/Waste", 2*b, 5*b);
@@ -123,7 +123,7 @@ public class Gui implements Art {
             g.drawString("ESC - Close, R - Restart, SpaceBar - Pause (and see this screen)", 2*b, 7*b);
             g.drawString("W or UP Arrow to move up the selection, S or DOWN Arrow to move down.", 2*b, 8*b);
             g.drawString("Num 1 - Debug Stuff and Paths", 2*b, 9*b);
-            g.drawString("Double click on the squares to put all on the screen.", 2*b, 10*b);
+            g.drawString("Double click on the item options to put all on the screen.", 2*b, 10*b);
         }
         g.drawString("Involucion By @elxirs. LudumDare #24 v0.3", c, z-d);
     }
@@ -170,7 +170,7 @@ public class Gui implements Art {
         }
     }
     public static void reSet(){
-        int[] var = {5, 5, 5, 5, 5, 5, 5, 5};
+        int[] var = {2, 2, 2, 2, 5, 5, 5, 5};
         variables = var;
     }
     public void onDoubleClick(){

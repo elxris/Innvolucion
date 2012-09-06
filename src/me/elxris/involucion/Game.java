@@ -14,6 +14,7 @@ import me.elxris.involucion.art.Cuerpo;
 public class Game extends JPanel{
     public static List<Art> gui = new ArrayList<Art>();
     public static List<Cuerpo> art = new ArrayList<Cuerpo>();
+    public static List<Cuerpo> newArt = new ArrayList<Cuerpo>();
     public static int score;
     private static boolean pausa = false;
     public Game(){
@@ -21,7 +22,7 @@ public class Game extends JPanel{
         setBackground(Color.BLACK);
     }
     public static void addCuerpo(Cuerpo e){
-        art.add(e);
+        newArt.add(e);
     }
     public void addGui(Art e){
         gui.add(e);
@@ -32,11 +33,20 @@ public class Game extends JPanel{
         for(Cuerpo c: art){
             if(c.isVivo()){
                 c.dibujar(g);
-            }else{
-                art.remove(c);
             }
         }
         paintGui(g);
+    }
+    public void limpiar(){
+        List<Cuerpo> vivos = new ArrayList<Cuerpo>();
+        for(Cuerpo c: art){
+            if(c.isVivo()){
+                vivos.add(c);
+            }
+        }
+        art.retainAll(vivos);
+        art.addAll(newArt);
+        newArt.clear();
     }
     public void paintGui(Graphics g){
         for(Art a: gui){

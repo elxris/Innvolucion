@@ -94,7 +94,7 @@ public class Cuerpo implements Art{
                     getComida(getTipoAlimento(getTipo()));
                 }
                 //Funciones de evolucion
-                if(rndm.nextInt(500+(10*Game.art.size())) == 0){
+                if(rndm.nextInt(500+(5*Game.art.size())) == 0){
                     procrear();
                     desprender();
                 }
@@ -429,7 +429,7 @@ public class Cuerpo implements Art{
     
     public void procrear(){
         //Reunir capacidades de ambiente como del cuerpo
-        if(getSize() > 10){
+        if(getSize() > 12){
             Cuerpo c = new Cuerpo();
             c.setTipo(getTipo());
             c.setPosX(getPosX());
@@ -442,11 +442,11 @@ public class Cuerpo implements Art{
                     rndm.nextInt(getMutar()*2)-getMutar());
             c.setEspecie(getEspecie()+rndm.nextInt(getMutar()));
             c.setLados(getLados());
-            c.setResistencia(getResistencia()+(rndm.nextInt(getMutar()))-1);
-            c.setRapidez(getRapidez()+rndm.nextInt(getMutar())-1);
-            c.setMutar(getMutar()+(rndm.nextInt(getMutar()))-1);
+            c.setResistencia(getResistencia()+(rndm.nextInt(getMutar())));
+            c.setRapidez(getRapidez()+rndm.nextInt(getMutar()));
+            c.setMutar(getMutar()+(rndm.nextInt(getMutar())));
             Game.addCuerpo(c);
-            setSize(getSize()-2);
+            setSize(getSize()-5);
             Game.score += c.getEspecie();
         }
     }
